@@ -1,0 +1,37 @@
+From: Muhammad Waleed Badar <walid.badar@gmail.com>
+Subject: [PATCH] drivers: sdhc: esp32: make the input delay phase configurable
+
+The ESP32-S3 SDMMC host samples the data lines with a programmable
+delay phase (sdmmc_ll_set_din_delay_phase). The driver programs phase 0
+once at init and never touches it again, which is only right for
+default speed. ESP-IDF exposes the phase per slot (sdmmc_slot_config_t
+delayphase) because boards whose slot goes through the GPIO matrix need
+a later sampling point at 40 MHz. Add a Kconfig option for the phase
+used in high speed mode and apply it whenever the card clock changes.
+
+Signed-off-by: Muhammad Waleed Badar <walid.badar@gmail.com>
+---
+ drivers/sdhc/Kconfig.esp32 | 10 ++++++++++
+ drivers/sdhc/sdhc_esp32.c  | 14 ++++++++++++++
+ 2 files changed, 24 insertions(+)
+
+diff --git a/drivers/sdhc/Kconfig.esp32 b/drivers/sdhc/Kconfig.esp32
+--- a/drivers/sdhc/Kconfig.esp32
++++ b/drivers/sdhc/Kconfig.esp32
+@@ -14,6 +14,16 @@ config SDHC_ESP32
+ 	  SDHC driver for Espressif ESP32 SoCs. Supports SD, SDIO and MMC
+ 	  cards through the SD/MMC host controller.
+ 
++config SDHC_ESP32_HS_DIN_DELAY_PHASE
++	int "Input delay phase in high speed mode (40 MHz)"
++	default 0
++	range 0 3
++	depends on SDHC_ESP32
++	help
++	  Delay phase used to sample the data lines once the card clock is
++	  in high speed mode. Phase 0 samples at the clock edge; boards whose
++	  slot is routed through the GPIO matrix often need phase 1 or 2.
++
+ config SDHC_BUFFER_ALIGNMENT
+ 	default DCACHE_LINE_SIZE if DCACHE
+ 	default 4

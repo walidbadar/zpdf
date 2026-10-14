@@ -1,0 +1,10 @@
+/*
+ * Copyright (c) 2026 Muhammad Waleed Badar
+ * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * Same geometry as the VIEWE board in landscape.
+ */
+&sdl_dc {
+	width = <480>;
+	height = <320>;
+};

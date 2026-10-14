@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  zpdf logo: a page with a folded corner carrying a "z". Original artwork
+  for this project,
+  Copyright (c) 2026 Muhammad Waleed Badar, SPDX-License-Identifier: GPL-3.0-only
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"
+     role="img" aria-label="zpdf">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f80ed"/>
+      <stop offset="1" stop-color="#1b3a8a"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#tile)"/>
+  <!-- Page with a folded top right corner -->
+  <path d="M72 40H152L192 80V216H72Z" fill="#ffffff"/>
+  <path d="M152 40V80H192Z" fill="#cfe0fb"/>
+  <!-- "z" on the page -->
+  <path d="M100 118H164L100 182H164" fill="none" stroke="#1b3a8a" stroke-width="18"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

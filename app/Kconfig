@@ -1,0 +1,66 @@
+# Copyright (c) 2026 Muhammad Waleed Badar
+# SPDX-License-Identifier: GPL-3.0-only
+
+mainmenu "zpdf reader"
+
+config ZPDF_APP_MAX_FILE_SIZE
+	int "Largest document that is opened (bytes)"
+	default 6291456
+	help
+	  Documents are read into RAM as a whole; on the ESP32-S3 that is the
+	  8 MB PSRAM, which also holds the decoded streams.
+
+config ZPDF_APP_MOUNT_POINT
+	string "Mount point of the document storage"
+	default "/SD:"
+	depends on FILE_SYSTEM
+
+config ZPDF_APP_DISK_NAME
+	string "Disk the storage is mounted from"
+	default "SD"
+	depends on FILE_SYSTEM
+
+config ZPDF_APP_MAX_FILES
+	int "Maximum number of documents listed"
+	default 64
+
+config ZPDF_APP_AUTO_OPEN
+	bool "Open the first document at boot"
+	help
+	  Skips the document list when the storage holds at least one PDF:
+	  useful for kiosk-like use and for measuring on hardware.
+
+config ZPDF_APP_SD_TUNING
+	bool "Tune the ESP32-S3 SD slot (drive strength, input delay phase)"
+	default y if SOC_SERIES_ESP32S3 && SDHC
+	depends on SOC_SERIES_ESP32S3
+
+config ZPDF_APP_SD_DRIVE_STRENGTH
+	int "Pad drive strength of the SD pins (0 weakest .. 3 strongest, -1 leave)"
+	default 3
+	range -1 3
+	depends on ZPDF_APP_SD_TUNING
+
+config ZPDF_APP_SD_DIN_PHASE
+	int "SDMMC host input delay phase (0 .. 3)"
+	default 0
+	range 0 3
+	depends on ZPDF_APP_SD_TUNING
+
+config ZPDF_APP_RENDER_STACK_SIZE
+	int "Stack of the render/extract worker thread"
+	default 32768
+
+config ZPDF_APP_RENDER_PRIORITY
+	int "Priority of the render worker thread (below the UI and the input thread)"
+	default 13
+
+config ZPDF_APP_MAX_ZOOM_PCT
+	int "Largest page zoom in percent of fit-to-width"
+	default 300
+	help
+	  Pages are rendered in tiles of twice the viewport size, so the cost
+	  of a zoom level is bounded; the renderer's clip and soft masks are
+	  tile-sized too.
+
+source "Kconfig.zephyr"

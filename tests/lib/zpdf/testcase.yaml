@@ -1,0 +1,13 @@
+# Copyright (c) 2026 Muhammad Waleed Badar
+# SPDX-License-Identifier: GPL-3.0-only
+
+common:
+  tags:
+    - zpdf
+tests:
+  lib.zpdf:
+    platform_allow:
+      - native_sim/native/64
+      - qemu_cortex_m3
+    integration_platforms:
+      - native_sim/native/64

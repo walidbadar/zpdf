@@ -1,0 +1,40 @@
+/*
+ * Copyright (c) 2026 Muhammad Waleed Badar
+ * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * VIEWE UEDX32480035E-WB-A in landscape (480x320) for reading.
+ *
+ * MADCTL: MV (0x20) exchanges rows and columns, BGR (0x08) is the colour
+ * order of the panel. The board's portrait value is 0x48 (MX | BGR). If the
+ * picture is upside down for the way the board is mounted, use 0xe8
+ * (MY | MX | MV | BGR) and "inverted-y" instead of "inverted-x" for touch.
+ */
+&st7796s {
+	width = <480>;
+	height = <320>;
+	pgc = [f0 06 0b 07 06 05 2e 33 47 3a 17 16 2e 31];
+	ngc = [f0 09 0d 09 08 23 2e 33 46 38 13 13 2c 32];
+	madctl = <0x28>;
+};
+
+/*
+ * The touch controller keeps reporting in the panel's own 320x480 space.
+ * Landscape x is the panel's y, and landscape y runs against the panel's x.
+ */
+&chsc6x {
+	screen-width = <320>;
+	screen-height = <480>;
+	inverted-x;
+	swapped-x-y;
+};
+
+/*
+ * SD card. The slot is routed through the GPIO matrix; with the 4-bit bus
+ * the data lines only transfer reliably in default speed mode (measured:
+ * reads fail with -EIO at 40 and 52 MHz, work at 25 MHz; 1-bit works up to
+ * 52 MHz but is slower overall).
+ */
+&sdhc0 {
+	bus-width = <4>;
+	max-bus-freq = <25000000>;
+};

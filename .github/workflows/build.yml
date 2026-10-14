@@ -1,0 +1,40 @@
+# Copyright (c) 2026 Muhammad Waleed Badar
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    container: ghcr.io/zephyrproject-rtos/ci:v0.29.4
+    env:
+      CMAKE_PREFIX_PATH: /opt/toolchains
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: zpdf
+
+      - name: Initialize west workspace
+        working-directory: zpdf
+        run: |
+          west init -l .
+          west update -o=--depth=1 -n
+
+      - name: Build the reader application
+        working-directory: zpdf
+        run: west twister -T app -v --inline-logs --integration
+
+      - name: Run the unit tests
+        working-directory: zpdf
+        run: west twister -T tests -v --inline-logs --integration
+
+      - name: Build the host tools
+        working-directory: zpdf
+        run: |
+          make -C tools/pdftext
+          make -C tools/pdfrender

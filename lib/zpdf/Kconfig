@@ -1,0 +1,40 @@
+# Copyright (c) 2026 Muhammad Waleed Badar
+# SPDX-License-Identifier: GPL-3.0-only
+
+menuconfig ZPDF
+	bool "zpdf PDF parsing and text extraction library"
+	help
+	  Parses PDF documents (xref tables and streams, object streams,
+	  FlateDecode/LZW/ASCII filters, page tree, fonts and CMaps) and
+	  extracts the text of a page as UTF-8.
+
+if ZPDF
+
+config ZPDF_MAX_PAGES
+	int "Maximum number of pages collected from the page tree"
+	default 4096
+
+config ZPDF_AUX_CACHE_BYTES
+	int "Budget for decoded font programs kept between pages (bytes)"
+	default 1572864
+	help
+	  Fonts embedded in a document are decoded once and kept for the next
+	  pages up to this many bytes; the oldest unused ones are dropped.
+
+config ZPDF_IMAGE_MEM_BYTES
+	int "Memory budget for decoding one image (bytes)"
+	default 3145728
+	help
+	  Images larger than this are decoded at a reduced size (JPEG in the
+	  DCT domain, Flate by box filtering rows), which bounds the memory a
+	  scanned page needs.
+
+config ZPDF_GLYPH_CACHE_BYTES
+	int "Budget for rasterized glyphs during one page render (bytes)"
+	default 393216
+
+config ZPDF_LOG_LEVEL
+	int "Log level of the library (0 none, 1 errors, 2 warnings, 3 info)"
+	default 1
+
+endif # ZPDF

@@ -1,0 +1,28 @@
+# Copyright (c) 2026 Muhammad Waleed Badar
+# SPDX-License-Identifier: GPL-3.0-only
+#
+# West manifest: "west init -m <this repo> && west update" creates a
+# workspace with Zephyr and the modules zpdf needs. The repository itself is
+# a Zephyr module (zephyr/module.yml) and is picked up automatically.
+
+manifest:
+  self:
+    path: zpdf
+
+  remotes:
+    - name: zephyrproject-rtos
+      url-base: https://github.com/zephyrproject-rtos
+
+  projects:
+    - name: zephyr
+      remote: zephyrproject-rtos
+      revision: main
+      import:
+        # Only the modules the library and the reader application need
+        name-allowlist:
+          - cmsis_6
+          - fatfs
+          - hal_espressif
+          - lvgl
+          - mbedtls
+          - picolibc

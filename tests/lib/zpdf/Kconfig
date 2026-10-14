@@ -1,0 +1,8 @@
+# Copyright (c) 2026 Muhammad Waleed Badar
+# SPDX-License-Identifier: GPL-3.0-only
+
+config ZPDF_TEST_RENDER
+	bool "Run the rendering tests (need about 1 MB of heap)"
+	default y
+
+source "Kconfig.zephyr"

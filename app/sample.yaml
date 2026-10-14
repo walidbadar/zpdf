@@ -1,0 +1,18 @@
+# Copyright (c) 2026 Muhammad Waleed Badar
+# SPDX-License-Identifier: GPL-3.0-only
+
+sample:
+  name: zpdf reader
+  description: PDF reader with LVGL user interface
+common:
+  build_only: true
+  tags:
+    - zpdf
+    - display
+tests:
+  app.zpdf.reader:
+    platform_allow:
+      - uedx32480035e_wb_a/esp32s3/procpu
+      - native_sim/native/64
+    integration_platforms:
+      - native_sim/native/64
